@@ -1,0 +1,42 @@
+{
+  "name": "create-fastedge-app",
+  "version": "0.0.4",
+  "description": "Create FastEdge apps with no build configuration.",
+  "main": "src/create-app/index.ts",
+  "type": "module",
+  "author": "Gcore",
+  "homepage": "https://github.com/G-Core/create-fastedge-app#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/G-Core/create-fastedge-app.git"
+  },
+  "bin": {
+    "create-fastedge-app": "./bin/create-fastedge-app.js"
+  },
+  "files": [
+    "bin/create-fastedge-app.js",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm-run-all -s build:starter-kit copy:resources build:create-app",
+    "build:d": "npm run build:create-app",
+    "build:create-app": "node esbuild/create-app.js",
+    "copy:resources": "cp ./dist/resources.ts ./src/create-app/resources.ts",
+    "build:starter-kit": "tsx ./src/create-starter-kit/index.ts",
+    "start": "npm run build:create-app && ./bin/create-app.js"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.9",
+    "esbuild": "^0.27.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@clack/prompts": "^0.11.0",
+    "@iarna/toml": "^3.0.0",
+    "arg": "^5.0.2",
+    "glob": "^13.0.0",
+    "npm-run-all2": "^8.0.4",
+    "picocolors": "^1.1.1",
+    "tsx": "^4.20.6"
+  }
+}

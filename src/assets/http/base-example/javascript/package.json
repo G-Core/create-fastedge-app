@@ -1,0 +1,12 @@
+{
+  "name": "fastedge-basic-http-app",
+  "description": "Basic HTTP example for FastEdge application",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "npx fastedge-build ./src/index.js ./wasm/basic-http.wasm"
+  },
+  "devDependencies": {
+    "@gcoredev/fastedge-sdk-js": "^2.2.0"
+  }
+}

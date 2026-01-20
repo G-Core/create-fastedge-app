@@ -1,0 +1,16 @@
+{
+  "name": "fastedge-basic-cdn-app",
+  "description": "Basic CDN example for FastEdge application",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "asc assembly/index.ts --target release --outFile build/basic-cdn.wasm  --textFile build/basic-cdn.wat --sourceMap --optimize"
+  },
+  "devDependencies": {
+    "assemblyscript": "^0.28.9"
+  },
+  "dependencies": {
+    "@assemblyscript/wasi-shim": "^0.1.0",
+    "@gcoredev/proxy-wasm-sdk-as": "^1.1.0"
+  }
+}

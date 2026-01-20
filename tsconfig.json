@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "rootDir": "./src",
+    "strict": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": {
+      "~componentize/*": ["./src/componentize/*"],
+      "~constants/*": ["./src/constants/*"],
+      "~fastedge-assets/*": ["./src/cli/fastedge-assets/*"],
+      "~fastedge-build/*": ["./src/cli/fastedge-build/*"],
+      "~fastedge-init/*": ["./src/cli/fastedge-init/*"],
+      "~static-assets/*": ["./src/server/static-assets/*"],
+      "~utils/*": ["./src/utils/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

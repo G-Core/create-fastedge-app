@@ -1,0 +1,11 @@
+[package]
+name = "basic_http"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+fastedge =  "0.3"
+
+[lib]
+path = "main.rs"
+crate-type = ["cdylib"]

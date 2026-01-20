@@ -1,0 +1,13 @@
+{
+  "name": "fastedge-basic-http-app",
+  "description": "Basic HTTP example for FastEdge application",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && npx fastedge-build --input ./src/index.ts --output ./wasm/basic-http.wasm --tsconfig ./tsconfig.json"
+  },
+  "devDependencies": {
+    "@gcoredev/fastedge-sdk-js": "^2.2.0",
+    "typescript": "^5.0.0"
+  }
+}
