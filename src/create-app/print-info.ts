@@ -18,6 +18,8 @@ If no DIRECTORY is provided, the current directory will be used.
   --js, --javascript        Use JavaScript as the programming language for the FastEdge application.
   --ts, --typescript        Use TypeScript as the programming language for the FastEdge application.
   --as, --assemblyscript    Use AssemblyScript as the programming language for the FastEdge application.
+  --pnpm                    Use pnpm as the package manager for the FastEdge application.
+  --yarn                    Use yarn as the package manager for the FastEdge application.
 
 
   Available templates:

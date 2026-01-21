@@ -7,12 +7,7 @@ import color from "picocolors";
 import { printHelp, printVersion } from "./print-info.js";
 import { confirmSetupConfig } from "./validate-config.js";
 
-import {
-  availableTemplates,
-  PackageManager,
-  ParsedArgs,
-  Template,
-} from "./types.js";
+import { availableTemplates, ParsedArgs, Template } from "./types.js";
 import { createTemplateFiles } from "src/create-app/create-files.js";
 
 const exec = util.promisify(child_process.exec);
@@ -25,13 +20,6 @@ const validateTemplate = (value: string): Template => {
   return "";
 };
 
-const validatePackageManager = (value: string): PackageManager => {
-  if (["npm", "yarn", "pnpm"].includes(value)) {
-    return value as PackageManager;
-  }
-  return "npm";
-};
-
 let args: ParsedArgs;
 
 try {
@@ -41,18 +29,18 @@ try {
       "--version": Boolean,
       "--help": Boolean,
       "--template": validateTemplate,
-      "--package-manager": validatePackageManager,
       "--javascript": Boolean,
       "--typescript": Boolean,
       "--assemblyscript": Boolean,
       "--rust": Boolean,
       "--no-verify": Boolean,
+      "--pnpm": Boolean,
+      "--yarn": Boolean,
 
       // Aliases
       "-v": "--version",
       "-h": "--help",
       "-t": "--template",
-      "-p": "--package-manager",
       "--js": "--javascript",
       "--as": "--assemblyscript",
       "--ts": "--typescript",

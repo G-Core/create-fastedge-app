@@ -29,7 +29,8 @@ interface ParsedArgs {
   "--typescript"?: boolean;
   "--rust"?: boolean;
   "--no-verify"?: boolean;
-  "--package-manager"?: PackageManager;
+  "--pnpm"?: boolean;
+  "--yarn"?: boolean;
 }
 
 type CodeLanguage = "assemblyscript" | "javascript" | "typescript" | "rust";

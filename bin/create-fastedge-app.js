@@ -939,6 +939,8 @@ If no DIRECTORY is provided, the current directory will be used.
   --js, --javascript        Use JavaScript as the programming language for the FastEdge application.
   --ts, --typescript        Use TypeScript as the programming language for the FastEdge application.
   --as, --assemblyscript    Use AssemblyScript as the programming language for the FastEdge application.
+  --pnpm                    Use pnpm as the package manager for the FastEdge application.
+  --yarn                    Use yarn as the package manager for the FastEdge application.
 
 
   Available templates:
@@ -1079,6 +1081,12 @@ var confirmSetupConfig = async (args2) => {
       }
     }
   }
+  let packageManager = "npm";
+  if (args2["--yarn"]) {
+    packageManager = "yarn";
+  } else if (args2["--pnpm"]) {
+    packageManager = "pnpm";
+  }
   const [directoryInteracted, directoryPath] = await selectDirectory(args2);
   const [templateInteracted, template] = await selectTemplate(
     args2["--template"] ?? ""
@@ -1102,7 +1110,7 @@ var confirmSetupConfig = async (args2) => {
     directoryPath,
     template: mapTemplateName(template),
     language,
-    packageManager: args2["--package-manager"] ?? "npm"
+    packageManager
   };
 };
 
@@ -1149,12 +1157,6 @@ var validateTemplate = (value) => {
   }
   return "";
 };
-var validatePackageManager = (value) => {
-  if (["npm", "yarn", "pnpm"].includes(value)) {
-    return value;
-  }
-  return "npm";
-};
 var args;
 try {
   args = (0, import_arg.default)(
@@ -1163,17 +1165,17 @@ try {
       "--version": Boolean,
       "--help": Boolean,
       "--template": validateTemplate,
-      "--package-manager": validatePackageManager,
       "--javascript": Boolean,
       "--typescript": Boolean,
       "--assemblyscript": Boolean,
       "--rust": Boolean,
       "--no-verify": Boolean,
+      "--pnpm": Boolean,
+      "--yarn": Boolean,
       // Aliases
       "-v": "--version",
       "-h": "--help",
       "-t": "--template",
-      "-p": "--package-manager",
       "--js": "--javascript",
       "--as": "--assemblyscript",
       "--ts": "--typescript",

@@ -6,6 +6,7 @@ import {
   availableTemplates,
   CodeLanguage,
   MappedTemplate,
+  PackageManager,
   ParsedArgs,
   SetupConfig,
   Template,
@@ -147,6 +148,13 @@ const confirmSetupConfig = async (args: ParsedArgs): Promise<SetupConfig> => {
     }
   }
 
+  let packageManager: PackageManager = "npm";
+  if (args["--yarn"]) {
+    packageManager = "yarn";
+  } else if (args["--pnpm"]) {
+    packageManager = "pnpm";
+  }
+
   const [directoryInteracted, directoryPath] = await selectDirectory(args);
 
   const [templateInteracted, template] = await selectTemplate(
@@ -179,7 +187,7 @@ const confirmSetupConfig = async (args: ParsedArgs): Promise<SetupConfig> => {
     directoryPath,
     template: mapTemplateName(template),
     language,
-    packageManager: args["--package-manager"] ?? "npm",
+    packageManager,
   };
 };
 
