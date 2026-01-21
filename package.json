@@ -2,7 +2,7 @@
   "name": "create-fastedge-app",
   "version": "0.0.4",
   "description": "Create FastEdge apps with no build configuration.",
-  "main": "src/create-app/index.ts",
+  "main": "bin/create-fastedge-app.js",
   "type": "module",
   "author": "Gcore",
   "homepage": "https://github.com/G-Core/create-fastedge-app#readme",
@@ -19,7 +19,6 @@
   ],
   "scripts": {
     "build": "npm-run-all -s build:starter-kit copy:resources build:create-app",
-    "build:d": "npm run build:create-app",
     "build:create-app": "node esbuild/create-app.js",
     "copy:resources": "cp ./dist/resources.ts ./src/create-app/resources.ts",
     "build:starter-kit": "tsx ./src/create-starter-kit/index.ts",
