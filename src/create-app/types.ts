@@ -29,6 +29,7 @@ interface ParsedArgs {
   "--typescript"?: boolean;
   "--rust"?: boolean;
   "--no-verify"?: boolean;
+  "--npm"?: boolean;
   "--pnpm"?: boolean;
   "--yarn"?: boolean;
 }

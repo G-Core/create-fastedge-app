@@ -34,6 +34,7 @@ try {
       "--assemblyscript": Boolean,
       "--rust": Boolean,
       "--no-verify": Boolean,
+      "--npm": Boolean,
       "--pnpm": Boolean,
       "--yarn": Boolean,
 
@@ -51,7 +52,6 @@ try {
     },
   ) as ParsedArgs;
 } catch (error) {
-  console.log("Farq: -> error:", error);
   printHelp();
   process.exit(0);
 }

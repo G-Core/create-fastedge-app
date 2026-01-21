@@ -1,6 +1,7 @@
 import { confirm, select, log, cancel, text } from "@clack/prompts";
 
 import { FastEdgeTemplates } from "./resources.js";
+import { detectPackageManager } from "../utils/detect-package-manager.js";
 
 import {
   availableTemplates,
@@ -148,11 +149,15 @@ const confirmSetupConfig = async (args: ParsedArgs): Promise<SetupConfig> => {
     }
   }
 
-  let packageManager: PackageManager = "npm";
-  if (args["--yarn"]) {
-    packageManager = "yarn";
+  // Detect package manager from environment.
+  let packageManager: PackageManager = detectPackageManager();
+  // Override detected package manager if user provided a flag
+  if (args["--npm"]) {
+    packageManager = "npm";
   } else if (args["--pnpm"]) {
     packageManager = "pnpm";
+  } else if (args["--yarn"]) {
+    packageManager = "yarn";
   }
 
   const [directoryInteracted, directoryPath] = await selectDirectory(args);

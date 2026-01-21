@@ -1,0 +1,60 @@
+name: Create a versioned release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.*"
+
+jobs:
+  fossa:
+    uses: ./.github/workflows/fossa.yaml
+    secrets:
+      FOSSA_PUB_API_KEY: ${{ secrets.FOSSA_PUB_API_KEY }}
+
+  create_resources_release:
+    runs-on: ubuntu-latest # Use a standard runner for Trusted Publishing
+    permissions:
+      contents: write # Required for creating releases
+      id-token: write # Required for provenance
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v6
+
+      - name: Ensure release tag matches npm version (package.json)
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          NPM_VERSION=$(node -p "require('./package.json').version")
+          if [[ ! "$TAG_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9]+)?$ ]]; then
+            echo "Invalid tag format: $TAG_VERSION"
+            exit 1
+          fi
+          if [[ "v$NPM_VERSION" != "$TAG_VERSION" ]]; then
+            echo "Version mismatch: package.json version is $NPM_VERSION but tag is $TAG_VERSION"
+            exit 1
+          fi
+          echo "Tag version $TAG_VERSION matches package.json version $NPM_VERSION"
+
+      - name: Setup Node Environment
+        uses: ./.github/setup-node
+
+      - name: Build Resources files
+        run: |
+          pnpm build
+
+      - name: Create SHA256 checksum
+        working-directory: ./dist
+        run: |
+          shasum -a 256 resources.ts > resources.ts.sha256
+
+      - name: Upload release archive
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ./dist/resources.ts
+            ./dist/resources.ts.sha256
+
+      - name: Publish to npm
+        shell: bash
+        run: |
+          pnpm publish --provenance --access public --no-git-checks
