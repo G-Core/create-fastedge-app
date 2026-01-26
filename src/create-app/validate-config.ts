@@ -6,7 +6,6 @@ import { detectPackageManager } from "../utils/detect-package-manager.js";
 import {
   availableTemplates,
   CodeLanguage,
-  MappedTemplate,
   PackageManager,
   ParsedArgs,
   SetupConfig,
@@ -24,19 +23,10 @@ const relativePath = (fullPath: string): string => {
   return `./${fullPath}`;
 };
 
-const mapTemplateName = (template: Template): MappedTemplate => {
-  switch (template) {
-    case "":
-    case "http":
-      return "http-base";
-    case "cdn":
-      return "cdn-base";
-    default:
-      return template;
+const templateLanguages = (template: Template): Array<CodeLanguage> => {
+  if (template === "") {
+    return ["assemblyscript", "javascript", "typescript", "rust"];
   }
-};
-
-const templateLanguages = (template: MappedTemplate): Array<CodeLanguage> => {
   return FastEdgeTemplates[template].map(
     (temp) => temp.language as CodeLanguage,
   );
@@ -57,7 +47,24 @@ const templateLanguageOptions = (
   }));
 };
 
+const availableTemplateOptions = (
+  language: CodeLanguage,
+): Array<{
+  value: Template;
+  label: string;
+}> => {
+  return Object.entries(FastEdgeTemplates)
+    .filter(([_, templates]) =>
+      templates.some((temp) => temp.language === language),
+    )
+    .map(([templateName, _]) => ({
+      value: templateName as Template,
+      label: templateName,
+    }));
+};
+
 const selectTemplate = async (
+  language: CodeLanguage,
   templateArgs: Template,
 ): Promise<UserInteracted<Template>> => {
   let selectedTemplate = templateArgs;
@@ -65,22 +72,35 @@ const selectTemplate = async (
     log.step(`Template: ${selectedTemplate}`);
     return [false, selectedTemplate];
   }
-  selectedTemplate = (await select({
-    message: "Select a template:",
-    options: availableTemplates.filter(Boolean).map((template) => ({
-      value: template,
-      label: template,
-    })),
-  })) as Template;
+  const templateOptions = availableTemplateOptions(language);
+  if (templateOptions.length === 1) {
+    selectedTemplate = templateOptions[0].value;
+    log.step(`Template: ${selectedTemplate}`);
+    return [false, selectedTemplate];
+  } else {
+    selectedTemplate = (await select({
+      message: "Select a template:",
+      options: availableTemplateOptions(language),
+    })) as Template;
+  }
   return [true, selectedTemplate];
 };
 
+const getLanguageInput = async (
+  availableLangs: Array<CodeLanguage>,
+): Promise<UserInteracted<CodeLanguage>> => {
+  const userSelectedLang = (await select({
+    message: "Select programming language:",
+    options: templateLanguageOptions(availableLangs),
+  })) as CodeLanguage;
+  return [true, userSelectedLang];
+};
+
 const validateLanguageSelection = async (
-  template: Template,
   args: ParsedArgs,
 ): Promise<UserInteracted<CodeLanguage>> => {
-  const mappedTemplate = mapTemplateName(template);
-  const availableLangs = templateLanguages(mappedTemplate);
+  const providedTemplate = args["--template"] ?? "";
+  const availableLangs = templateLanguages(providedTemplate);
 
   let selectedLang = "" as CodeLanguage;
 
@@ -94,6 +114,12 @@ const validateLanguageSelection = async (
     selectedLang = "assemblyscript";
   }
 
+  if (!selectedLang) {
+    const userSelectedLang = await getLanguageInput(availableLangs);
+    log.step(`Language: ${userSelectedLang[1]}`);
+    return userSelectedLang;
+  }
+
   if (!availableLangs.includes(selectedLang as CodeLanguage)) {
     if (
       availableLangs.includes("assemblyscript") &&
@@ -102,6 +128,11 @@ const validateLanguageSelection = async (
       // Coerce typescript to assemblyscript if that's the only option
       selectedLang = "assemblyscript";
     } else {
+      if (providedTemplate) {
+        log.warn(
+          `The selected template "${providedTemplate}" does not support the provided language "${selectedLang}".`,
+        );
+      }
       selectedLang = (await select({
         message: "Select programming language:",
         options: templateLanguageOptions(availableLangs),
@@ -109,6 +140,7 @@ const validateLanguageSelection = async (
       return [true, selectedLang];
     }
   }
+
   log.step(`Language: ${selectedLang}`);
 
   return [false, selectedLang];
@@ -162,13 +194,11 @@ const confirmSetupConfig = async (args: ParsedArgs): Promise<SetupConfig> => {
 
   const [directoryInteracted, directoryPath] = await selectDirectory(args);
 
-  const [templateInteracted, template] = await selectTemplate(
-    args["--template"] ?? "",
-  );
+  const [languageInteracted, language] = await validateLanguageSelection(args);
 
-  const [languageInteracted, language] = await validateLanguageSelection(
-    template,
-    args,
+  const [templateInteracted, template] = await selectTemplate(
+    language,
+    args["--template"] ?? "",
   );
 
   let configConfirmed = true;
@@ -190,9 +220,10 @@ const confirmSetupConfig = async (args: ParsedArgs): Promise<SetupConfig> => {
 
   return {
     directoryPath,
-    template: mapTemplateName(template),
+    template,
     language,
     packageManager,
+    codespaces: !!args["--codespaces"],
   };
 };
 

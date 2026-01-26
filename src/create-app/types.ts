@@ -1,20 +1,8 @@
-const availableTemplates = [
-  "http",
-  "http-react",
-  "http-react-hono",
-  "cdn",
-  "",
-] as const;
+import { availableTemplates } from "./available-templates.js";
 
 type Template = (typeof availableTemplates)[number];
 
 type PackageManager = "npm" | "yarn" | "pnpm";
-
-type MappedTemplate =
-  | "http-base"
-  | "http-react"
-  | "http-react-hono"
-  | "cdn-base";
 
 /**
  * Represents the parsed arguments from the CLI.
@@ -28,19 +16,22 @@ interface ParsedArgs {
   "--assemblyscript"?: boolean;
   "--typescript"?: boolean;
   "--rust"?: boolean;
-  "--no-verify"?: boolean;
   "--npm"?: boolean;
   "--pnpm"?: boolean;
   "--yarn"?: boolean;
+  // Un-documented options:
+  "--no-verify"?: boolean; // for skipping verification steps
+  "--codespaces"?: boolean; // for codespaces initialization
 }
 
 type CodeLanguage = "assemblyscript" | "javascript" | "typescript" | "rust";
 
 interface SetupConfig {
   directoryPath: string;
-  template: MappedTemplate;
+  template: Omit<Template, "">;
   language: CodeLanguage;
   packageManager: PackageManager;
+  codespaces: boolean;
 }
 
 type UserInteracted<T> = [boolean, T];
@@ -48,7 +39,6 @@ type UserInteracted<T> = [boolean, T];
 export { availableTemplates };
 export type {
   CodeLanguage,
-  MappedTemplate,
   PackageManager,
   ParsedArgs,
   SetupConfig,

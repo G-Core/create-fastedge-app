@@ -8,4 +8,3 @@ proxy-wasm = "0.2.1"
 
 [lib]
 crate-type = ["cdylib"]
-path = "lib.rs"

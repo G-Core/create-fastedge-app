@@ -4,11 +4,13 @@ import child_process from "node:child_process";
 import util from "node:util";
 import color from "picocolors";
 
-import { printHelp, printVersion } from "./print-info.js";
+import { availableTemplates } from "./available-templates.js";
 import { confirmSetupConfig } from "./validate-config.js";
+import { createInitializedFile } from "./initialized-flag.js";
+import { createTemplateFiles } from "./create-files.js";
+import { printHelp, printVersion } from "./print-info.js";
 
-import { availableTemplates, ParsedArgs, Template } from "./types.js";
-import { createTemplateFiles } from "src/create-app/create-files.js";
+import { ParsedArgs, Template } from "./types.js";
 
 const exec = util.promisify(child_process.exec);
 const loader = spinner();
@@ -37,6 +39,7 @@ try {
       "--npm": Boolean,
       "--pnpm": Boolean,
       "--yarn": Boolean,
+      "--codespaces": Boolean,
 
       // Aliases
       "-v": "--version",
@@ -88,24 +91,28 @@ if (config.language !== "rust") {
   loader.stop("Dependencies installed.");
 }
 
+if (config.codespaces) {
+  await createInitializedFile();
+}
+
 // Success message with next steps
 console.log();
 console.log(color.green("✓ ") + color.bold("Project created successfully!"));
 console.log();
 console.log(color.dim("Next steps:"));
-console.log();
-console.log(`  ${color.cyan("cd")} ${config.directoryPath}`);
+console.log("");
+// remove trailing slash for check
+if (config.directoryPath.replace(/\/+$/, "") !== ".") {
+  console.log(`  ${color.cyan("cd")} ${config.directoryPath}`);
+}
 
 if (config.language !== "rust") {
-  console.log(
-    `  ${color.cyan(`${config.packageManager} run dev`)} ${color.dim("# Start development server")}`,
-  );
   console.log(
     `  ${color.cyan(`${config.packageManager} run build`)} ${color.dim("# Build for production")}`,
   );
 } else {
   console.log(
-    `  ${color.cyan("cargo build")} ${color.dim("# Build the project")}`,
+    `  ${color.cyan("cargo build --release")} ${color.dim("# Build for production")}`,
   );
 }
 

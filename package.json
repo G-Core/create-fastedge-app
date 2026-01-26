@@ -1,6 +1,6 @@
 {
   "name": "create-fastedge-app",
-  "version": "0.0.9",
+  "version": "0.0.13",
   "description": "Create FastEdge apps with no build configuration.",
   "main": "bin/create-fastedge-app.js",
   "type": "module",
@@ -18,8 +18,9 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm-run-all -s build:starter-kit copy:resources build:create-app",
+    "build": "npm-run-all -s build:starter-kit copy:resources build:available-templates build:create-app",
     "build:create-app": "node esbuild/create-app.js",
+    "build:available-templates": "node ./scripts/create-available-templates.js",
     "copy:resources": "cp ./dist/resources.ts ./src/create-app/resources.ts",
     "build:starter-kit": "tsx ./src/create-starter-kit/index.ts",
     "start": "npm run build:create-app && ./bin/create-app.js"
