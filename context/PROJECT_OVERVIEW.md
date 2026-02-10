@@ -19,6 +19,7 @@
 ### As npm Package
 
 **Create new app**:
+
 ```bash
 # Using npm
 npm create fastedge-app
@@ -31,6 +32,7 @@ pnpm create fastedge-app
 ```
 
 **Interactive prompts ask for**:
+
 1. Project name
 2. Template type (HTTP or CDN)
 3. Specific template (base, React, React+Hono)
@@ -39,23 +41,10 @@ pnpm create fastedge-app
 
 **Result**: Fully scaffolded FastEdge project ready to build and deploy
 
-### As MCP Server Component
-
-**FastEdge MCP Server** imports `dist/resources.ts` for programmatic template access:
-
-```typescript
-import { templates } from 'create-fastedge-app/dist/resources.ts';
-
-// MCP tool: scaffold-fastedge-project
-const template = templates['http-react-typescript'];
-// Generate files programmatically
-```
-
----
-
 ## Tech Stack
 
 ### Core Technologies
+
 - **Language**: TypeScript
 - **CLI Framework**: @clack/prompts (beautiful CLI UX)
 - **Build Tool**: esbuild (CLI bundling) + custom starter-kit builder
@@ -63,6 +52,7 @@ const template = templates['http-react-typescript'];
 - **Node**: 20+ (defined in .node-version)
 
 ### Key Dependencies
+
 - `@clack/prompts` - Interactive CLI prompts
 - `@iarna/toml` - TOML parsing (Cargo.toml for Rust)
 - `arg` - Command-line argument parsing
@@ -70,6 +60,7 @@ const template = templates['http-react-typescript'];
 - `picocolors` - Terminal colors
 
 ### Development Dependencies
+
 - `tsx` - TypeScript execution
 - `esbuild` - Fast bundler
 - `npm-run-all2` - Script orchestration
@@ -134,11 +125,13 @@ create-fastedge-app/
 ### Complete Flow (User Perspective)
 
 1. **User runs command**:
+
    ```bash
    npm create fastedge-app
    ```
 
 2. **CLI displays welcome**:
+
    ```
    ╭────────────────────────────────────────╮
    │  Welcome to FastEdge App Generator!    │
@@ -159,6 +152,7 @@ create-fastedge-app/
    - Copies configuration files
 
 5. **Post-setup display**:
+
    ```
    ✓ Project created successfully!
 
@@ -171,31 +165,35 @@ create-fastedge-app/
 ### Build Flow (Developer Perspective)
 
 **Step 1: Build starter kits** (`pnpm run build:starter-kit`):
+
 ```typescript
 // src/create-starter-kit/index.ts
-const templates = await processTemplates('src/assets');
+const templates = await processTemplates("src/assets");
 // Reads all template directories
 // Processes files into template objects
 // Generates dist/resources.ts
 ```
 
 **Step 2: Copy resources** (`pnpm run copy:resources`):
+
 ```bash
 cp ./dist/resources.ts ./src/create-app/resources.ts
 ```
 
 **Step 3: Build CLI** (`pnpm run build:create-app`):
+
 ```typescript
 // esbuild/create-app.js
 esbuild.build({
-  entryPoints: ['src/create-app/index.ts'],
+  entryPoints: ["src/create-app/index.ts"],
   bundle: true,
-  platform: 'node',
-  outfile: 'bin/create-fastedge-app.js'
+  platform: "node",
+  outfile: "bin/create-fastedge-app.js",
 });
 ```
 
 **Result**:
+
 - `bin/create-fastedge-app.js` - Bundled CLI with templates
 - `dist/resources.ts` - Standalone template bundle for MCP Server
 
@@ -206,29 +204,32 @@ esbuild.build({
 ### Template Structure
 
 **Each template contains**:
+
 - Source code files (`.js`, `.ts`, `.as`)
 - Build configuration (`package.json`, `Cargo.toml`, `asconfig.json`)
 - README with instructions
 - Example code and comments
 
 **Template metadata**:
+
 ```typescript
 interface Template {
-  name: string;           // e.g., "http-base-typescript"
-  type: 'http' | 'cdn';   // Template category
-  language: string;        // 'javascript', 'typescript', 'assemblyscript'
-  files: TemplateFile[];   // Array of file contents
+  name: string; // e.g., "http-base-typescript"
+  type: "http" | "cdn"; // Template category
+  language: string; // 'javascript', 'typescript', 'assemblyscript'
+  files: TemplateFile[]; // Array of file contents
 }
 
 interface TemplateFile {
-  path: string;           // Relative path in project
-  content: string;        // File contents (can include placeholders)
+  path: string; // Relative path in project
+  content: string; // File contents (can include placeholders)
 }
 ```
 
 ### Template Types
 
 **HTTP Templates**:
+
 - `http-base` - Basic HTTP request/response handling
   - Service Workers API pattern
   - Minimal dependencies
@@ -246,6 +247,7 @@ interface TemplateFile {
   - Variants: TypeScript only
 
 **CDN Templates**:
+
 - `cdn-base` - CDN proxy with traffic modification
   - Request/response manipulation
   - Header modification
@@ -255,21 +257,25 @@ interface TemplateFile {
 ### Language Support
 
 **JavaScript**:
+
 - CommonJS or ESM
 - FastEdge SDK JS
 - Node.js style coding
 
 **TypeScript**:
+
 - Type safety
 - Modern syntax
 - FastEdge SDK JS with types
 
 **AssemblyScript**:
+
 - WebAssembly-first
 - Low-level performance
 - CDN use cases
 
 **Rust** (planned):
+
 - High performance
 - Memory safe
 - FastEdge SDK Rust
@@ -283,6 +289,7 @@ interface TemplateFile {
 **Input**: `src/assets/` directories with template projects
 
 **Process**:
+
 1. Scan `src/assets/` recursively
 2. For each template directory:
    - Read all files
@@ -293,17 +300,18 @@ interface TemplateFile {
 4. Write to `dist/resources.ts`
 
 **Output**: `dist/resources.ts`
+
 ```typescript
 export const templates = {
-  'http-base-javascript': {
-    name: 'http-base-javascript',
-    type: 'http',
-    language: 'javascript',
+  "http-base-javascript": {
+    name: "http-base-javascript",
+    type: "http",
+    language: "javascript",
     files: [
-      { path: 'src/index.js', content: '...' },
-      { path: 'package.json', content: '...' },
+      { path: "src/index.js", content: "..." },
+      { path: "package.json", content: "..." },
       // ...
-    ]
+    ],
   },
   // ... more templates
 };
@@ -312,8 +320,9 @@ export const templates = {
 ### Using Templates
 
 **CLI usage** (`src/create-app/index.ts`):
+
 ```typescript
-import { templates } from './resources.ts';
+import { templates } from "./resources.ts";
 
 const selectedTemplate = templates[templateKey];
 
@@ -324,16 +333,14 @@ for (const file of selectedTemplate.files) {
     // ... other variables
   });
 
-  fs.writeFileSync(
-    path.join(projectDir, file.path),
-    content
-  );
+  fs.writeFileSync(path.join(projectDir, file.path), content);
 }
 ```
 
 **MCP Server usage**:
+
 ```typescript
-import { templates } from 'create-fastedge-app/dist/resources.ts';
+import { templates } from "create-fastedge-app/dist/resources.ts";
 
 // scaffold-fastedge-project tool
 const template = templates[templateName];
@@ -347,6 +354,7 @@ const template = templates[templateName];
 ### Updating Template Dependencies
 
 **npm packages** (across all templates):
+
 ```bash
 ./update-npm-package.js <package-name> <version>
 
@@ -355,11 +363,13 @@ const template = templates[templateName];
 ```
 
 **How it works**:
+
 - Finds all `package.json` files in `src/assets/`
 - Updates specified dependency/devDependency
 - Maintains version prefix (^, ~, etc.)
 
 **Cargo dependencies** (Rust templates):
+
 ```bash
 ./update-cargo-dependency.js <crate-name> <version>
 
@@ -368,6 +378,7 @@ const template = templates[templateName];
 ```
 
 **How it works**:
+
 - Finds all `Cargo.toml` files in `src/assets/`
 - Updates specified dependency
 - Uses TOML parser for safe updates
@@ -378,6 +389,7 @@ const template = templates[templateName];
 **Solution**: Automated updates ensure consistency
 
 **Benefits**:
+
 - Update all templates at once
 - Prevent version drift
 - Reduce manual errors
@@ -389,6 +401,7 @@ const template = templates[templateName];
 ### Clack Prompts
 
 **@clack/prompts** provides:
+
 - Beautiful UI components
 - Progress indicators
 - Spinners
@@ -396,36 +409,39 @@ const template = templates[templateName];
 - Validation
 
 **Example prompt**:
+
 ```typescript
-import * as clack from '@clack/prompts';
+import * as clack from "@clack/prompts";
 
 const projectName = await clack.text({
-  message: 'What is your project name?',
-  placeholder: 'my-fastedge-app',
+  message: "What is your project name?",
+  placeholder: "my-fastedge-app",
   validate: (value) => {
-    if (!value) return 'Project name is required';
-    if (fs.existsSync(value)) return 'Directory already exists';
-  }
+    if (!value) return "Project name is required";
+    if (fs.existsSync(value)) return "Directory already exists";
+  },
 });
 
 const templateType = await clack.select({
-  message: 'Select template type:',
+  message: "Select template type:",
   options: [
-    { value: 'http', label: 'HTTP Application' },
-    { value: 'cdn', label: 'CDN Edge Function' }
-  ]
+    { value: "http", label: "HTTP Application" },
+    { value: "cdn", label: "CDN Edge Function" },
+  ],
 });
 ```
 
 ### Validation
 
 **Input validation** (`src/create-app/validate-config.ts`):
+
 - Project name: alphanumeric, hyphens, no spaces
 - Directory availability: must not exist
 - Template selection: must be valid template key
 - Language: must be supported by template
 
 **File validation**:
+
 - Template must have all required files
 - package.json must be valid JSON
 - Build configuration must be present
@@ -437,12 +453,14 @@ const templateType = await clack.select({
 ### npm CLI Consumer
 
 **How it works**:
+
 1. User runs `npm create fastedge-app`
 2. npm downloads package
 3. Executes `bin/create-fastedge-app.js`
 4. CLI runs with bundled `resources.ts`
 
 **Benefits**:
+
 - No external dependencies for templates
 - Fast, offline-capable
 - Single binary distribution
@@ -450,19 +468,22 @@ const templateType = await clack.select({
 ### MCP Server Consumer
 
 **How it works**:
+
 1. MCP Server imports `dist/resources.ts`
 2. `scaffold-fastedge-project` tool accesses templates
 3. Generates files programmatically
 
 **Benefits**:
+
 - Code reuse (same templates)
 - Consistency between CLI and MCP
 - Single source of truth
 
 **Integration point**:
+
 ```typescript
 // In FastEdge MCP Server
-import { templates } from 'path/to/create-fastedge-app/dist/resources.ts';
+import { templates } from "path/to/create-fastedge-app/dist/resources.ts";
 
 // scaffold-fastedge-project tool
 export const scaffoldProject = async (args) => {
@@ -476,12 +497,14 @@ export const scaffoldProject = async (args) => {
 ## Development Workflow
 
 ### Building
+
 ```bash
 pnpm install
 pnpm run build              # Full build (templates + CLI)
 ```
 
 ### Testing Locally
+
 ```bash
 pnpm start                  # Build and run CLI
 # or
@@ -489,6 +512,7 @@ pnpm run build && ./bin/create-fastedge-app.js
 ```
 
 ### Adding New Template
+
 1. Create directory in `src/assets/{type}/{name}/{language}/`
 2. Add template files (source, config, README)
 3. Build: `pnpm run build:starter-kit`
@@ -496,6 +520,7 @@ pnpm run build && ./bin/create-fastedge-app.js
 5. Update documentation
 
 ### Updating Dependencies
+
 ```bash
 # Update FastEdge SDK across all templates
 ./update-npm-package.js @gcoredev/fastedge-sdk-js ^2.3.0
@@ -509,23 +534,27 @@ pnpm run build:starter-kit
 ## Key Design Decisions
 
 ### Why @clack/prompts?
+
 - Beautiful, modern CLI UX
 - Rich components (spinners, multi-select, etc.)
 - Built-in validation
 - Cancel handling
 
 ### Why Generate resources.ts?
+
 - Bundle templates into single file
 - Offline-capable CLI
 - Fast template access
 - Type-safe template objects
 
 ### Why Dual Consumer Model?
+
 - Code reuse between CLI and MCP
 - Single source of truth for templates
 - Consistency across tools
 
 ### Why Update Scripts?
+
 - Many templates with shared dependencies
 - Prevent version drift
 - Automated, error-free updates
@@ -544,6 +573,7 @@ pnpm run build:starter-kit
 ## Status: Current Features
 
 **Fully Implemented**:
+
 - ✅ Interactive CLI with @clack/prompts
 - ✅ HTTP base template (JS/TS)
 - ✅ React static site template (JS/TS)
@@ -554,6 +584,7 @@ pnpm run build:starter-kit
 - ✅ Dependency update scripts
 
 **Planned/Future**:
+
 - Rust template support
 - More HTTP templates (API, SSR, etc.)
 - More CDN templates
