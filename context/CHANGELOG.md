@@ -14,6 +14,83 @@ See `SEARCH_GUIDE.md` for more search patterns.
 
 ---
 
+## [2026-02-10] - Added --list-templates Flag for Programmatic Access
+
+### Overview
+Added `--list-templates` CLI flag to output template metadata as JSON, enabling the FastEdge MCP server and other tools to dynamically fetch available templates instead of hard-coding them.
+
+### What Was Completed
+
+**New CLI Flag**:
+- Added `--list-templates` / `-l` flag
+- Outputs JSON array of template metadata:
+  - `name`: Template identifier (e.g., "http-base")
+  - `description`: Human-readable description
+  - `languages`: Array of supported languages
+  - `applicationType`: "http" or "cdn"
+- **Fully dynamic**: Parses from `FastEdgeTemplates` (generated from `src/assets/`)
+
+**Files Created**:
+- `src/create-app/template-list.ts`:
+  - `getTemplateList()` - Parses FastEdgeTemplates and extracts metadata
+  - `TemplateMetadata` interface for type safety
+  - Reusable module for template list generation
+
+**Files Modified**:
+- `src/create-app/index.ts`:
+  - Added `--list-templates` handler using `getTemplateList()`
+  - Processes flag before interactive prompts
+- `src/create-app/types.ts`:
+  - Added `"--list-templates"?: boolean` to ParsedArgs interface
+- `src/create-app/print-info.ts`:
+  - Updated help text to document new flag
+
+### Usage
+
+```bash
+# Output template list as JSON
+npx create-fastedge-app --list-templates
+npx create-fastedge-app -l
+
+# Example output:
+# [
+#   {
+#     "name": "http-base",
+#     "description": "Simple request/response handling application",
+#     "languages": ["javascript", "typescript", "rust", "assemblyscript"],
+#     "applicationType": "http"
+#   },
+#   ...
+# ]
+```
+
+### Integration
+
+**FastEdge MCP Server**:
+- `list-fastedge-templates` tool now calls this command
+- No more hard-coded template lists
+- Always shows latest template information
+
+**Benefits**:
+- **Single source of truth**: Templates defined in `src/assets/`
+- **Zero manual maintenance**: Add template files → build → automatically available
+- **No sync issues**: Template list generated from actual template files during build
+- **Machine-readable**: JSON format for programmatic consumption
+- **Always accurate**: Languages list reflects exactly what's in `src/assets/`
+- **Type-safe**: `TemplateMetadata` interface for consumers
+
+### Testing
+
+```bash
+# Build and test
+pnpm run build
+node bin/create-fastedge-app.js --list-templates
+
+# Should output valid JSON array with 4 templates
+```
+
+---
+
 ## [2026-02-10] - Reverted to Language-Agnostic Skills (Rust Examples)
 
 ### Overview
