@@ -1,0 +1,15 @@
+name: fastedge-development
+version: 1.0.0
+description: Comprehensive guide for developing FastEdge applications with JavaScript, TypeScript, Rust, and AssemblyScript
+tags:
+  - fastedge
+  - edge-computing
+  - webassembly
+  - development
+keywords:
+  - fetch event
+  - request handling
+  - response manipulation
+  - environment variables
+  - secrets management
+  - build process

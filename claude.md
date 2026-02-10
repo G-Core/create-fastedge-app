@@ -245,6 +245,7 @@ grep -r "starter kit" context/
 - **Interactive Prompts**: Using @clack/prompts for beautiful CLI UX
 - **Multiple Templates**: HTTP (base, React, React+Hono) and CDN
 - **Multi-Language**: JavaScript, TypeScript, AssemblyScript, Rust
+- **Skills Integration**: All projects include .claude/skills/ for AI agent discoverability
 - **Template Generation**: Builds starter kits into bundled resources
 - **Dual Consumer**: Used by npm CLI and FastEdge MCP Server
 
@@ -288,8 +289,15 @@ create-fastedge-app/
 │   │   │   ├── base-example/
 │   │   │   ├── react-app/
 │   │   │   └── react-app-hono/
-│   │   └── cdn/            # CDN templates
-│   │       └── base-example/
+│   │   ├── cdn/            # CDN templates
+│   │   │   └── base-example/
+│   │   └── shared/         # Shared files merged into all templates
+│   │       └── .claude/
+│   │           └── skills/     # Skills included in all projects
+│   │               ├── fastedge-development/
+│   │               ├── fastedge-debugging/
+│   │               ├── fastedge-deployment/
+│   │               └── fastedge-examples/
 │   │
 │   ├── create-starter-kit/ # Template builder
 │   │   ├── index.ts        # Build entrypoint
@@ -319,7 +327,9 @@ create-fastedge-app/
 ```
 
 **Key Files:**
-- `src/assets/` - Template source files
+- `src/assets/http/` - HTTP template source files
+- `src/assets/cdn/` - CDN template source files
+- `src/assets/shared/` - Shared files (skills) merged into all templates
 - `src/create-starter-kit/index.ts` - Template build logic
 - `src/create-app/index.ts` - CLI implementation
 - `dist/resources.ts` - Generated template bundle (copied to src/create-app/)
