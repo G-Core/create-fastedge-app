@@ -1,0 +1,14 @@
+name: fastedge-debugging
+version: 1.0.0
+description: Local testing and debugging of FastEdge applications using the fastedge-debugger
+tags:
+  - fastedge
+  - debugging
+  - testing
+  - local-development
+keywords:
+  - debugger
+  - testing
+  - rest api
+  - development workflow
+  - local testing
