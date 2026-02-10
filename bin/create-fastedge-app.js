@@ -1172,6 +1172,7 @@ If no DIRECTORY is provided, the current directory will be used.
   -h,   --help              Print this help information
   -v,   --version           Print the version number
   -t,   --template          Specify which template to use
+  -l,   --list-templates    Print available template metadata as JSON
   -p,   --package-manager   Specify the package manager to use (npm, yarn, pnpm). Default is npm.
   --rs, --rust              Use Rust as the programming language for the FastEdge application.
   --js, --javascript        Use JavaScript as the programming language for the FastEdge application.
@@ -1204,7 +1205,7 @@ function printHelp() {
 // src/create-app/template-list.ts
 function getTemplateList() {
   return Object.entries(FastEdgeTemplates).map(([name, variants]) => {
-    const languages = variants.map((v2) => v2.language);
+    const languages = Array.from(new Set(variants.map((v2) => v2.language)));
     const description = variants[0].description;
     const applicationType = variants[0].applicationType;
     return {
