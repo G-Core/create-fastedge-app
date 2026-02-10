@@ -1,6 +1,6 @@
 {
   "name": "create-fastedge-app",
-  "version": "0.0.14-beta.0",
+  "version": "0.0.14-beta.1",
   "description": "Create FastEdge apps with no build configuration.",
   "main": "bin/create-fastedge-app.js",
   "type": "module",
