@@ -1170,7 +1170,8 @@ If no DIRECTORY is provided, the current directory will be used.
   Options:
 
   -h,   --help              Print this help information
-  -t,   --template
+  -v,   --version           Print the version number
+  -t,   --template          Specify which template to use
   -p,   --package-manager   Specify the package manager to use (npm, yarn, pnpm). Default is npm.
   --rs, --rust              Use Rust as the programming language for the FastEdge application.
   --js, --javascript        Use JavaScript as the programming language for the FastEdge application.
@@ -1200,6 +1201,21 @@ function printHelp() {
   console.log(USAGE_TEXT);
 }
 
+// src/create-app/template-list.ts
+function getTemplateList() {
+  return Object.entries(FastEdgeTemplates).map(([name, variants]) => {
+    const languages = variants.map((v2) => v2.language);
+    const description = variants[0].description;
+    const applicationType = variants[0].applicationType;
+    return {
+      name,
+      description,
+      languages,
+      applicationType
+    };
+  });
+}
+
 // src/create-app/index.ts
 var exec = util.promisify(child_process.exec);
 var loader = Y2();
@@ -1216,6 +1232,7 @@ try {
       // Types
       "--version": Boolean,
       "--help": Boolean,
+      "--list-templates": Boolean,
       "--template": validateTemplate,
       "--javascript": Boolean,
       "--typescript": Boolean,
@@ -1229,6 +1246,7 @@ try {
       // Aliases
       "-v": "--version",
       "-h": "--help",
+      "-l": "--list-templates",
       "-t": "--template",
       "--js": "--javascript",
       "--as": "--assemblyscript",
@@ -1249,6 +1267,11 @@ if (args["--version"]) {
 }
 if (args["--help"]) {
   printHelp();
+  process.exit(0);
+}
+if (args["--list-templates"]) {
+  const templates = getTemplateList();
+  console.log(JSON.stringify(templates, null, 2));
   process.exit(0);
 }
 console.log();

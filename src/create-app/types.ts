@@ -11,6 +11,7 @@ interface ParsedArgs {
   _: string[];
   "--version"?: boolean;
   "--help"?: boolean;
+  "--list-templates"?: boolean;
   "--template"?: Template;
   "--javascript"?: boolean;
   "--assemblyscript"?: boolean;
