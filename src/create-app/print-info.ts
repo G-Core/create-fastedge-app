@@ -14,6 +14,7 @@ If no DIRECTORY is provided, the current directory will be used.
   -h,   --help              Print this help information
   -v,   --version           Print the version number
   -t,   --template          Specify which template to use
+  -l,   --list-templates    Print available template metadata as JSON
   -p,   --package-manager   Specify the package manager to use (npm, yarn, pnpm). Default is npm.
   --rs, --rust              Use Rust as the programming language for the FastEdge application.
   --js, --javascript        Use JavaScript as the programming language for the FastEdge application.
