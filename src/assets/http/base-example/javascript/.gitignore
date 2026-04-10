@@ -50,3 +50,6 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+# FastEdge debugger artifacts
+**/.fastedge-debug/

@@ -274,11 +274,12 @@ interface TemplateFile {
 - Low-level performance
 - CDN use cases
 
-**Rust** (planned):
+**Rust**:
 
 - High performance
 - Memory safe
 - FastEdge SDK Rust
+- Supported in http-base and cdn-base templates
 
 ---
 
@@ -575,20 +576,22 @@ pnpm run build:starter-kit
 **Fully Implemented**:
 
 - ✅ Interactive CLI with @clack/prompts
-- ✅ HTTP base template (JS/TS)
+- ✅ HTTP base template (JS/TS/Rust)
 - ✅ React static site template (JS/TS)
 - ✅ React + Hono template (TS)
-- ✅ CDN base template (AssemblyScript)
+- ✅ CDN base template (AssemblyScript/Rust)
+- ✅ Rust template support (http-base, cdn-base)
 - ✅ Template generation system
 - ✅ Dual consumer model (npm + MCP)
 - ✅ Dependency update scripts
+- ✅ `--list-templates` flag for programmatic access
 
 **Planned/Future**:
 
-- Rust template support
 - More HTTP templates (API, SSR, etc.)
 - More CDN templates
+- Rust support for React templates
 
 ---
 
-**Last Updated**: February 2026
+**Last Updated**: February 11, 2026
