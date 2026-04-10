@@ -1,19 +1,14 @@
-# create-fastedge-app - Context Index
+# create-fastedge-app — Context Index
 
-**READ THIS FIRST** - This is your navigation hub for understanding create-fastedge-app.
+**READ THIS FIRST** — tells you what to read based on your task.
+
+**Last Updated**: April 2026
 
 ---
 
 ## Quick Overview
 
-**create-fastedge-app** is a CLI tool for scaffolding FastEdge applications from templates. It provides an interactive experience using @clack/prompts and generates projects from built-in starter kits.
-
-**Key Features**:
-- Interactive CLI prompts for template selection
-- Multiple templates: HTTP (base, React, React+Hono) and CDN
-- Multi-language support: JavaScript, TypeScript, AssemblyScript, Rust
-- Template generation system that bundles starter kits
-- Dual consumer: npm CLI + FastEdge MCP Server
+**create-fastedge-app** is a CLI tool for scaffolding FastEdge applications from templates. Interactive CLI using @clack/prompts. Dual consumer: npm CLI + FastEdge MCP Server (via `dist/resources.ts`).
 
 **Tech Stack**: TypeScript, @clack/prompts, esbuild, pnpm
 
@@ -21,262 +16,89 @@
 
 ## Decision Tree: What to Read When
 
-### Working with Templates
-
-**Task: Add new template**
-→ Read: `templates/TEMPLATE_SYSTEM.md`
-→ Read: `templates/ADDING_TEMPLATES.md`
-→ Grep: `CHANGELOG.md` for "template" or similar additions
-
-**Task: Modify existing template**
-→ Read: specific template doc (`HTTP_TEMPLATES.md` or `CDN_TEMPLATES.md`)
-→ Read: `templates/TEMPLATE_SYSTEM.md`
-
-**Task: Update template dependencies**
-→ Read: `templates/DEPENDENCY_MANAGEMENT.md`
-→ Read: `development/UPDATE_SCRIPTS.md`
-
-**Task: Fix template validation**
-→ Read: `templates/VALIDATION_SYSTEM.md`
-→ Grep: `CHANGELOG.md` for "validation"
-
-### Working with CLI
-
-**Task: Modify CLI prompts**
-→ Read: `architecture/CLI_SYSTEM.md`
-→ Read: `architecture/CLACK_PROMPTS.md`
-
-**Task: Change file generation logic**
-→ Read: `architecture/CLI_SYSTEM.md`
-→ Read: `templates/TEMPLATE_GENERATION.md`
-
-**Task: Add new CLI option**
-→ Read: `architecture/CLI_SYSTEM.md`
-→ Read: `development/IMPLEMENTATION_GUIDE.md`
-
-### Build System
-
-**Task: Modify build process**
-→ Read: `architecture/BUILD_SYSTEM.md`
-→ Read: `templates/TEMPLATE_GENERATION.md`
-
-**Task: Change resource bundling**
-→ Read: `architecture/RESOURCE_BUNDLING.md`
-→ Read: `architecture/BUILD_SYSTEM.md`
-
-**Task: Fix build scripts**
-→ Read: `architecture/BUILD_SYSTEM.md`
-→ Grep: `CHANGELOG.md` for "build"
-
-### Understanding the System
-
-**Task: Understand CLI flow**
-→ Read: `PROJECT_OVERVIEW.md`
-→ Read: `architecture/CLI_SYSTEM.md`
-
-**Task: Understand template system**
-→ Read: `templates/TEMPLATE_SYSTEM.md`
-→ Read: `templates/AVAILABLE_TEMPLATES.md`
-
-**Task: Understand dual consumer model**
-→ Read: `PROJECT_OVERVIEW.md`
-→ Read: `architecture/RESOURCE_BUNDLING.md`
+| Task | Read |
+|------|------|
+| Understand the project | `PROJECT_OVERVIEW.md` |
+| Find what changed recently | Grep `CHANGELOG.md` (never read linearly) |
+| Understand template build process | `PROJECT_OVERVIEW.md` → "How It Works" section |
+| Add/modify a template | Look at existing templates in `src/assets/{type}/{template}/{language}/` |
+| Update dependencies across templates | See `update-npm-package.js` and `update-cargo-dependency.js` in repo root |
+| Understand shared assets | `src/assets/shared/` — merged into all scaffolded projects at build time |
+| Understand MCP server integration | `PROJECT_OVERVIEW.md` → "Dual Consumer Model" section |
 
 ---
 
-## Documentation Map
+## File Map
 
-### Core Starting Points
+```
+context/
+├── CONTEXT_INDEX.md          ← You are here
+├── PROJECT_OVERVIEW.md       # Architecture, templates, build process, dual consumer model
+├── CHANGELOG.md              # Change history — search, don't read linearly
+└── SEARCH_GUIDE.md           # Grep patterns for finding things
+```
 
-| Document | Lines | When to Read |
-|----------|-------|--------------|
-| **CONTEXT_INDEX.md** | ~100 | **Always read first** |
-| **PROJECT_OVERVIEW.md** | ~200 | Understanding the CLI tool |
-| **SEARCH_GUIDE.md** | ~50 | Learning how to search docs |
-| **CHANGELOG.md** | Variable | **Never read linearly** - use grep |
+---
 
-### Architecture (Read when modifying structure)
+## Template Inventory (April 2026)
 
-| Document | Focus | Read When |
-|----------|-------|-----------|
-| **CLI_SYSTEM.md** | CLI implementation, prompts | Modifying CLI behavior |
-| **BUILD_SYSTEM.md** | Build process, scripts | Changing build configuration |
-| **CLACK_PROMPTS.md** | Interactive prompts | Adding/modifying prompts |
-| **RESOURCE_BUNDLING.md** | Template bundling | Resource generation |
+| Template | Languages | Type |
+|----------|-----------|------|
+| `http/base-example` | JavaScript, TypeScript, Rust | HTTP |
+| `http/react-app` | JavaScript, TypeScript | HTTP |
+| `http/react-app-hono` | JavaScript, TypeScript | HTTP |
+| `cdn/base-example` | AssemblyScript, Rust | CDN |
 
-### Templates (Read specific template when needed)
+**9 template/language combinations. 4 template types.**
 
-| Document | Focus | Read When |
-|----------|-------|-----------|
-| **TEMPLATE_SYSTEM.md** | How templates work | Adding/modifying templates |
-| **ADDING_TEMPLATES.md** | Template creation guide | Adding new templates |
-| **AVAILABLE_TEMPLATES.md** | List of all templates | Overview of templates |
-| **HTTP_TEMPLATES.md** | HTTP template types | Working with HTTP templates |
-| **CDN_TEMPLATES.md** | CDN template types | Working with CDN templates |
-| **TEMPLATE_GENERATION.md** | Build process | Understanding generation |
-| **DEPENDENCY_MANAGEMENT.md** | Updating dependencies | Dependency updates |
-| **VALIDATION_SYSTEM.md** | Template validation | Validation logic |
+---
 
-### Development (Read when implementing/testing)
+## Shared Assets (What Every Scaffolded Project Gets)
 
-| Document | Focus | Read When |
-|----------|-------|-----------|
-| **IMPLEMENTATION_GUIDE.md** | Coding patterns | Starting development |
-| **TESTING_GUIDE.md** | Testing CLI/templates | Testing changes |
-| **UPDATE_SCRIPTS.md** | Dependency scripts | Using update scripts |
+`src/assets/shared/` contains files merged into all scaffolded projects:
+
+- **`CLAUDE.md`** — Slim pointer for Claude Code users: install the `gcore-fastedge` plugin + MCP server
+- **`AGENTS.md`** — Slim pointer for Codex users: add the MCP server + reference the plugin
+
+These are **pointers only** — no SDK documentation, no coding patterns. All FastEdge development knowledge lives in the `gcore-fastedge` Claude plugin (pipeline-generated, auto-updated) and MCP server resources.
+
+**Previous state (before April 2026):** Shipped 4 `.claude/skills/` directories with SDK documentation that became stale and contained incorrect API references. These were removed and replaced with the slim pointers above. See `architecture/PLUGIN_MCP_STRATEGY.md` in the coordinator repo for rationale.
+
+---
+
+## Key Architecture Decisions
+
+| Decision | Rationale |
+|----------|-----------|
+| Shared assets are slim pointers, not documentation | SDK docs go stale without an update mechanism. The plugin has a pipeline; this repo doesn't. |
+| CLAUDE.md + AGENTS.md (not skills) | Skills shipped in templates had 6 critical inaccuracies. Pointers can't go stale. |
+| `.fastedge-debug/` in all .gitignore templates | Debugger artifacts should never be committed |
+| Dual consumer model (npm CLI + MCP server) | Same templates, different interfaces. `dist/resources.ts` is the shared artifact. |
+| Build-time template merging | `createStarterKit()` merges `{...sharedFiles, ...templateFiles}` — shared assets always included |
+
+---
+
+## Build Process (Quick Reference)
+
+```bash
+pnpm install
+pnpm run build                    # Full build (all steps below)
+pnpm run build:starter-kit        # Step 1: Read src/assets/ → dist/resources.ts
+pnpm run copy:resources           # Step 2: Copy dist/resources.ts → src/create-app/resources.ts
+pnpm run build:available-templates # Step 3: Generate available-templates.ts
+pnpm run build:create-app         # Step 4: esbuild → bin/create-fastedge-app.js
+pnpm start                        # Build + run CLI
+```
 
 ---
 
 ## Search Patterns
 
-**Don't read CHANGELOG.md linearly** - Use these search patterns:
+**Don't read CHANGELOG.md linearly.** Use grep:
 
 ```bash
-# Find template changes
-grep -i "http-react" context/CHANGELOG.md
-grep -i "template.*add" context/CHANGELOG.md
-
-# Find CLI changes
-grep -i "prompt" context/CHANGELOG.md
-grep -i "clack" context/CHANGELOG.md
-
-# Find build changes
-grep -i "build" context/CHANGELOG.md
-grep -i "resource" context/CHANGELOG.md
-
-# Find specific fixes
-grep -i "fix.*template" context/CHANGELOG.md
+grep -i "template" context/CHANGELOG.md
+grep -i "rust" context/CHANGELOG.md
+grep -i "shared" context/CHANGELOG.md
+grep -i "skill" context/CHANGELOG.md
 ```
-
-See `SEARCH_GUIDE.md` for more patterns.
-
----
-
-## Key Concepts
-
-### CLI Flow
-
-1. **User runs**: `npm create fastedge-app` or `npx create-fastedge-app`
-2. **CLI starts**: Displays welcome and prompts
-3. **Interactive prompts**: Template type, language, project name, etc.
-4. **Validation**: Check inputs, directory availability
-5. **File generation**: Create project files from selected template
-6. **Post-setup**: Display next steps, installation commands
-
-### Template System
-
-**Template structure**:
-```
-src/assets/
-├── http/                   # HTTP application templates
-│   ├── base-example/      # Basic HTTP request/response
-│   ├── react-app/         # Static React site
-│   └── react-app-hono/    # React + Hono backend
-└── cdn/                    # CDN edge templates
-    └── base-example/       # Traffic modification
-```
-
-**Each template has**:
-- Source files (language-specific)
-- Build configuration
-- Package dependencies
-- README documentation
-
-### Build Process
-
-1. **Build templates**: `pnpm run build:starter-kit`
-   - Reads `src/assets/` starter kits
-   - Processes into template objects
-   - Generates `dist/resources.ts`
-
-2. **Copy resources**: `pnpm run copy:resources`
-   - Copies `dist/resources.ts` to `src/create-app/resources.ts`
-
-3. **Build CLI**: `pnpm run build:create-app`
-   - Bundles CLI with esbuild
-   - Includes resources.ts
-   - Outputs to `bin/create-fastedge-app.js`
-
-### Dual Consumer Model
-
-**npm CLI**:
-- Direct usage: `npm create fastedge-app`
-- Bundled resources in CLI binary
-- Interactive user experience
-
-**FastEdge MCP Server**:
-- Imports `dist/resources.ts`
-- Programmatic template access
-- Used by `scaffold-fastedge-project` tool
-
----
-
-## Available Templates
-
-**HTTP Templates**:
-- **http/base-example** - Basic HTTP (JS/TS)
-- **http/react-app** - React static site (JS/TS)
-- **http/react-app-hono** - React + Hono (JS/TS)
-
-**CDN Templates**:
-- **cdn/base-example** - CDN proxy (AssemblyScript)
-
-**Language Support**:
-- JavaScript
-- TypeScript
-- AssemblyScript
-- Rust (planned)
-
----
-
-## Token Efficiency Strategy
-
-**Estimated token costs:**
-- This file (CONTEXT_INDEX.md): ~250 tokens
-- PROJECT_OVERVIEW.md: ~500 tokens
-- Architecture doc: ~500-1,000 tokens each
-- Template doc: ~500-1,500 tokens each
-- CHANGELOG.md: **Don't read** - grep only
-
-**Typical task token usage:**
-- Simple template fix: ~750 tokens (this file + 1 template doc)
-- New template: ~1,500-2,500 tokens (this file + 2-3 docs)
-- CLI change: ~1,000-2,000 tokens (this file + CLI docs)
-
-**Compare to reading everything upfront: ~8,000+ tokens**
-
----
-
-## Getting Help
-
-**Common questions:**
-
-1. **How do I add a new template?**
-   → Read: `templates/ADDING_TEMPLATES.md`
-
-2. **How does the build process work?**
-   → Read: `architecture/BUILD_SYSTEM.md`
-
-3. **How do I test my changes?**
-   → Read: `development/TESTING_GUIDE.md`
-
-4. **How do prompts work?**
-   → Read: `architecture/CLACK_PROMPTS.md`
-
-5. **How do I update dependencies?**
-   → Read: `templates/DEPENDENCY_MANAGEMENT.md`
-
----
-
-## Next Steps
-
-1. **If you haven't already**: Read `PROJECT_OVERVIEW.md` for a lightweight introduction
-2. **Use the decision tree above** to find docs relevant to your task
-3. **Read SEARCH_GUIDE.md** to learn effective search patterns
-4. **Follow links** in documentation to discover related information
-
-**Remember**: Only read what you need for your current task. The system is designed for just-in-time discovery.
-
----
-
-**Last Updated**: February 2026

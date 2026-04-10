@@ -9,8 +9,9 @@
 - **Quick Start**: Create FastEdge apps in seconds with proven templates
 - **Interactive Experience**: Beautiful CLI prompts using @clack/prompts
 - **Multiple Templates**: HTTP, React, React+Hono, CDN options
-- **Multi-Language**: JavaScript, TypeScript, AssemblyScript support
+- **Multi-Language**: JavaScript, TypeScript, AssemblyScript, Rust support
 - **Dual Consumer**: Used by both npm CLI and FastEdge MCP Server
+- **AI-Ready**: Ships CLAUDE.md + AGENTS.md pointers to plugin and MCP server
 
 ---
 
@@ -73,18 +74,24 @@ pnpm create fastedge-app
 create-fastedge-app/
 ├── src/
 │   ├── assets/                     # Template starter kits (source)
+│   │   ├── shared/                 # Merged into ALL scaffolded projects
+│   │   │   ├── CLAUDE.md           # Pointer → plugin + MCP server
+│   │   │   └── AGENTS.md           # Pointer → MCP server (Codex)
 │   │   ├── http/                   # HTTP application templates
 │   │   │   ├── base-example/       # Basic HTTP
-│   │   │   │   ├── javascript/     # JS variant
-│   │   │   │   └── typescript/     # TS variant
+│   │   │   │   ├── javascript/
+│   │   │   │   ├── typescript/
+│   │   │   │   └── rust/
 │   │   │   ├── react-app/          # React static site
 │   │   │   │   ├── javascript/
 │   │   │   │   └── typescript/
 │   │   │   └── react-app-hono/     # React + Hono backend
+│   │   │       ├── javascript/
 │   │   │       └── typescript/
 │   │   └── cdn/                    # CDN edge templates
 │   │       └── base-example/
-│   │           └── assemblyscript/
+│   │           ├── assemblyscript/
+│   │           └── rust/
 │   │
 │   ├── create-starter-kit/         # Template builder
 │   │   ├── index.ts                # Build entrypoint
@@ -244,7 +251,7 @@ interface TemplateFile {
   - Vite frontend
   - Hono routing on edge
   - API routes
-  - Variants: TypeScript only
+  - Variants: JavaScript, TypeScript
 
 **CDN Templates**:
 
@@ -252,7 +259,7 @@ interface TemplateFile {
   - Request/response manipulation
   - Header modification
   - Caching control
-  - Variants: AssemblyScript
+  - Variants: AssemblyScript, Rust
 
 ### Language Support
 
@@ -280,6 +287,20 @@ interface TemplateFile {
 - Memory safe
 - FastEdge SDK Rust
 - Supported in http-base and cdn-base templates
+
+---
+
+## Shared Assets
+
+Files in `src/assets/shared/` are merged into every scaffolded project at build time. The merge order is `{...sharedFiles, ...templateFiles}` — template files override shared files if there's a conflict.
+
+**Current shared assets:**
+- `CLAUDE.md` — Slim pointer directing Claude Code users to install the `gcore-fastedge` plugin and MCP server
+- `AGENTS.md` — Slim pointer directing Codex users to the MCP server and plugin
+
+These are **pointers only** — no SDK documentation or coding guidance. All FastEdge development knowledge lives in the `gcore-fastedge` Claude plugin (pipeline-generated, auto-updated) and MCP server resources.
+
+**Why pointers instead of documentation:** Template-embedded documentation has no update mechanism. Previously shipped `.claude/skills/` with 4 skill files that accumulated 6 critical inaccuracies (wrong import paths, non-existent APIs, wrong build targets). Replaced with slim pointers in April 2026.
 
 ---
 
@@ -578,13 +599,15 @@ pnpm run build:starter-kit
 - ✅ Interactive CLI with @clack/prompts
 - ✅ HTTP base template (JS/TS/Rust)
 - ✅ React static site template (JS/TS)
-- ✅ React + Hono template (TS)
+- ✅ React + Hono template (JS/TS)
 - ✅ CDN base template (AssemblyScript/Rust)
 - ✅ Rust template support (http-base, cdn-base)
 - ✅ Template generation system
 - ✅ Dual consumer model (npm + MCP)
 - ✅ Dependency update scripts
 - ✅ `--list-templates` flag for programmatic access
+- ✅ CLAUDE.md + AGENTS.md slim pointers in all scaffolded projects
+- ✅ `.fastedge-debug/` in all template `.gitignore` files
 
 **Planned/Future**:
 
@@ -594,4 +617,4 @@ pnpm run build:starter-kit
 
 ---
 
-**Last Updated**: February 11, 2026
+**Last Updated**: April 2026
