@@ -89,6 +89,21 @@ function getTemplateFolderName(name: ScaffoldTemplateType): string {
   return templateMap[name];
 }
 
+/**
+ * Reads shared files that should be included in all projects
+ */
+async function readSharedFiles(): Promise<Record<string, string>> {
+  const sharedPath = path.join(process.cwd(), "src", "assets", "shared");
+
+  try {
+    const sharedFiles = await readDirectoryFiles(sharedPath);
+    return sharedFiles;
+  } catch (error) {
+    console.warn("Warning: Could not read shared files:", error);
+    return {};
+  }
+}
+
 const createStarterKit = async (
   name: ScaffoldTemplateType,
   description: string,
@@ -102,18 +117,31 @@ const createStarterKit = async (
     applicationType,
     templateFolderName
   );
+
+  // Read shared files (like .claude/skills/)
+  const sharedFiles = await readSharedFiles();
+
   // Get all language directories
   const languages = await getLanguageDirectories(templatePath);
 
   // Create scaffold data for each language
   const scaffoldPromises = languages.map(async (language) => {
     const languagePath = path.join(templatePath, language);
-    return createLanguageScaffold(
+    const languageScaffold = await createLanguageScaffold(
       languagePath,
       language,
       description,
       applicationType
     );
+
+    // Merge shared files into language-specific files
+    return {
+      ...languageScaffold,
+      files: {
+        ...sharedFiles,
+        ...languageScaffold.files,
+      },
+    };
   });
 
   // Wait for all scaffold data to be created

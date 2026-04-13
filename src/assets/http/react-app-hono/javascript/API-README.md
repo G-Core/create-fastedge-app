@@ -8,7 +8,8 @@ This project now has a clean separation between static site serving and API back
 fastedge-server/
 ├── server.jsx              # Main FastEdge server (production)
 ├── dev-server.js           # Development API server
-├── server.config.js        # Static server configuration
+├── config/
+|   └── server.config.js        # Static server configuration
 └── api/
     └── routes.js           # API route definitions
 ```

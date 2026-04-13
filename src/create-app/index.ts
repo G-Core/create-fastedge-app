@@ -9,6 +9,7 @@ import { confirmSetupConfig } from "./validate-config.js";
 import { createInitializedFile } from "./initialized-flag.js";
 import { createTemplateFiles } from "./create-files.js";
 import { printHelp, printVersion } from "./print-info.js";
+import { getTemplateList } from "./template-list.js";
 
 import { ParsedArgs, Template } from "./types.js";
 
@@ -30,6 +31,7 @@ try {
       // Types
       "--version": Boolean,
       "--help": Boolean,
+      "--list-templates": Boolean,
       "--template": validateTemplate,
       "--javascript": Boolean,
       "--typescript": Boolean,
@@ -44,6 +46,7 @@ try {
       // Aliases
       "-v": "--version",
       "-h": "--help",
+      "-l": "--list-templates",
       "-t": "--template",
       "--js": "--javascript",
       "--as": "--assemblyscript",
@@ -66,6 +69,12 @@ if (args["--version"]) {
 
 if (args["--help"]) {
   printHelp();
+  process.exit(0);
+}
+
+if (args["--list-templates"]) {
+  const templates = getTemplateList();
+  console.log(JSON.stringify(templates, null, 2));
   process.exit(0);
 }
 

@@ -42,7 +42,7 @@ This allows the FastEdge static-server to serve your React site to the browser [
 
 Apart from serving your React site, this example also provides some back-end routes: `/api/users`
 
-During development the `fastedge-server` is replaced with a [dev-server](./fastedge-server//dev-server.js). This makes for a faster development cycle.
+During development the `fastedge-server` is replaced with a [dev-server](./fastedge-server/dev-server.js). This makes for a faster development cycle.
 
 > **Note** \
 > This dev-server is not a direct replacement for testing within the FastEdge environment. \

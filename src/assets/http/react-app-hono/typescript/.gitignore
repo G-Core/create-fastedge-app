@@ -29,3 +29,6 @@ build/
 *.njsproj
 *.sln
 *.sw?
+
+# FastEdge debugger artifacts
+**/.fastedge-debug/
