@@ -92,6 +92,14 @@ pnpm start                        # Build + run CLI
 
 ---
 
+## What's Next
+
+1. **Add `"main"` entrypoint to `react-app-hono` `package.json`** — The react-app-hono template's package.json is missing the `"main"` field. This should be added for consistency and proper module resolution.
+
+2. **Discuss adding a `.vscode` folder with `launch.json`** — Consider shipping a `.vscode/launch.json` in templates (possibly via shared assets) to give VS Code users a ready-made debug configuration. Needs discussion: should this be shared across all templates or template-specific? What debug configurations make sense for FastEdge apps?
+
+---
+
 ## Search Patterns
 
 **Don't read CHANGELOG.md linearly.** Use grep:
