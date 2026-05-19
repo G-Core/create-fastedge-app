@@ -23,7 +23,7 @@
     "build:available-templates": "node ./scripts/create-available-templates.js",
     "copy:resources": "cp ./dist/resources.ts ./src/create-app/resources.ts",
     "build:starter-kit": "tsx ./src/create-starter-kit/index.ts",
-    "start": "npm run build:create-app && ./bin/create-app.js"
+    "start": "npm run build:create-app && ./bin/create-fastedge-app.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.9",
