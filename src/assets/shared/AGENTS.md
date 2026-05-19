@@ -9,7 +9,7 @@ This is a [Gcore FastEdge](https://gcore.com/cloud/fastedge) edge computing appl
 Add the FastEdge MCP server for build and deploy tools:
 
 ```
-codex mcp add fastedge -- docker run -i --rm -v "${PWD}:/workspace" -e FASTEDGE_API_KEY ghcr.io/g-core/fastedge-mcp-server:latest
+codex mcp add fastedge -- docker run -i --rm --pull=always -v "${PWD}:/workspace" -e GCORE_API_KEY ghcr.io/g-core/fastedge-mcp-server:latest
 ```
 
 **What you get:**

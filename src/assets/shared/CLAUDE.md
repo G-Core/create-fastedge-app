@@ -30,9 +30,9 @@ Add the FastEdge MCP server for build and deploy tools. Works with Claude Code, 
       "type": "stdio",
       "command": "docker",
       "args": [
-        "run", "-i", "--rm",
+        "run", "-i", "--rm", "--pull=always",
         "-v", "${workspaceFolder}:/workspace",
-        "-e", "FASTEDGE_API_KEY",
+        "-e", "GCORE_API_KEY",
         "ghcr.io/g-core/fastedge-mcp-server:latest"
       ]
     }
