@@ -1,27 +1,24 @@
-use fastedge::{
-    body::Body,
-    http::{header, Error, Method, Request, Response, StatusCode},
-};
+use wstd::http::body::Body;
+use wstd::http::{Method, Request, Response, StatusCode};
 
-#[fastedge::http]
-fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
-    match req.method() {
+#[wstd::http_server]
+async fn main(request: Request<Body>) -> anyhow::Result<Response<Body>> {
+    match request.method() {
         &Method::GET | &Method::HEAD => (),
         _ => {
-            return Response::builder()
+            return Ok(Response::builder()
                 .status(StatusCode::METHOD_NOT_ALLOWED)
-                .header(header::ALLOW, "GET, HEAD")
-                .body(Body::from("This method is not allowed\n"));
+                .header("allow", "GET, HEAD")
+                .body(Body::from("This method is not allowed\n"))?);
         }
     };
 
-    // get request path
-    let path = req.uri().path();
-    let response_body = format!("You made a request to: {}", path);
+    let path = request.uri().path();
 
-    let rsp = Response::builder()
+    Ok(Response::builder()
         .status(StatusCode::OK)
-        .body(Body::from(response_body))?;
-
-    Ok(rsp)
+        .header("content-type", "text/plain;charset=UTF-8")
+        .body(Body::from(format!(
+            "Hello from FastEdge! You made a request to {path}"
+        )))?)
 }

@@ -7,7 +7,7 @@
     "build": "tsc && npx fastedge-build --input ./src/index.ts --output ./wasm/basic-http.wasm --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@gcoredev/fastedge-sdk-js": "^2.2.0",
+    "@gcoredev/fastedge-sdk-js": "^2.3.0",
     "typescript": "^5.0.0"
   }
 }

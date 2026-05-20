@@ -8,7 +8,7 @@ A simple FastEdge application that responds to HTTP requests.
 cargo build --release
 ```
 
-This will create `./target/wasm32-wasip1/release/basic_http.wasm` ready for deployment.
+This will create `./target/wasm32-wasip2/release/basic_wasi_http.wasm` ready for deployment.
 
 ## Deploy
 
