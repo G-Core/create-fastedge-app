@@ -41,6 +41,10 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Template Assets lock-files
+src/assets/**/package-lock.json
+src/assets/**/Cargo.lock
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
