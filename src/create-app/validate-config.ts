@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import { confirm, select, log, cancel, text } from "@clack/prompts";
 
 import { FastEdgeTemplates } from "./resources.js";
@@ -17,7 +19,7 @@ const relativePath = (fullPath: string): string => {
   if (fullPath === "." || fullPath === "./") {
     return ".";
   }
-  if (fullPath.startsWith("./")) {
+  if (fullPath.startsWith("./") || path.isAbsolute(fullPath)) {
     return fullPath;
   }
   return `./${fullPath}`;
