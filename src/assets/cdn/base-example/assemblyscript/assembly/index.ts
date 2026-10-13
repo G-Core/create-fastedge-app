@@ -7,8 +7,8 @@ import {
   LogLevelValues,
   registerRootContext,
   RootContext,
-  setLogLevel,
 } from "@gcoredev/proxy-wasm-sdk-as/assembly";
+import { setLogLevel } from "@gcoredev/proxy-wasm-sdk-as/assembly/fastedge";
 
 class HttpBodyRoot extends RootContext {
   createContext(context_id: u32): Context {
